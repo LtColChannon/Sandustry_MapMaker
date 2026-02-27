@@ -1,0 +1,550 @@
+{
+    "version": "0.0.5",
+    "player": {
+        "x": 2560,
+        "y": 640,
+        "width": 12,
+        "height": 30,
+        "velocity": {
+            "x": 0,
+            "y": 0
+        },
+        "threshold": {
+            "x": 0,
+            "y": 0
+        },
+        "onGround": false,
+        "inventory": [
+            {
+                "id": 1,
+                "itemType": 1,
+                "abilities": [
+                    {
+                        "type": 1,
+                        "cooldown": {
+                            "time": 80,
+                            "last": 0
+                        }
+                    }
+                ],
+                "name": "Shovel",
+                "description": "Dig a hole. Damage type: ⛏️"
+            },
+            {
+                "id": 2,
+                "itemType": 2,
+                "data": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "name": "Grabber",
+                "description": "A grabber that can be used to pick up sand."
+            },
+            {
+                "id": 3,
+                "itemType": 2,
+                "name": "Demolisher",
+                "description": "A demolisher that can be used to remove structures. Shortcut: [X]"
+            },
+            {
+                "id": 7,
+                "itemType": 2,
+                "name": "Marquee",
+                "description": "A marquee tool that can be used to move or copy structures (hold [C] to copy and [Backspace] to delete). Shortcut: [Shift]"
+            },
+            {
+                "id": 6,
+                "itemType": 1,
+                "abilities": [
+                    {
+                        "type": 2,
+                        "cooldown": {
+                            "time": 100,
+                            "last": 0
+                        },
+                        "attributes": {
+                            "projectileBlueprint": {
+                                "opts": {
+                                    "speed": 600
+                                },
+                                "type": 1,
+                                "attributes": {
+                                    "blastRadius": 5
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": 2,
+                        "levelRequirement": 2,
+                        "cooldown": {
+                            "time": 100,
+                            "last": 0
+                        },
+                        "attributes": {
+                            "projectileBlueprint": {
+                                "opts": {
+                                    "speed": 600,
+                                    "angle": 4
+                                },
+                                "type": 1,
+                                "attributes": {
+                                    "blastRadius": 5
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": 2,
+                        "levelRequirement": 2,
+                        "cooldown": {
+                            "time": 100,
+                            "last": 0
+                        },
+                        "attributes": {
+                            "projectileBlueprint": {
+                                "opts": {
+                                    "speed": 600,
+                                    "angle": 2
+                                },
+                                "type": 1,
+                                "attributes": {
+                                    "blastRadius": 5
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": 2,
+                        "levelRequirement": 2,
+                        "cooldown": {
+                            "time": 100,
+                            "last": 0
+                        },
+                        "attributes": {
+                            "projectileBlueprint": {
+                                "opts": {
+                                    "speed": 600,
+                                    "angle": -2
+                                },
+                                "type": 1,
+                                "attributes": {
+                                    "blastRadius": 5
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": 2,
+                        "levelRequirement": 2,
+                        "cooldown": {
+                            "time": 100,
+                            "last": 0
+                        },
+                        "attributes": {
+                            "projectileBlueprint": {
+                                "opts": {
+                                    "speed": 600,
+                                    "angle": -4
+                                },
+                                "type": 1,
+                                "attributes": {
+                                    "blastRadius": 5
+                                }
+                            }
+                        }
+                    }
+                ],
+                "name": "Gun",
+                "description": "A long distance mining tool. Damage type: ⛏️"
+            },
+            {
+                "id": 12,
+                "itemType": 1,
+                "abilities": [
+                    {
+                        "type": 2,
+                        "cooldown": {
+                            "time": 100,
+                            "last": 0
+                        },
+                        "attributes": {
+                            "projectileBlueprint": {
+                                "opts": {
+                                    "speed": 400,
+                                    "duration": 1,
+                                    "noMuzzleFlash": true,
+                                    "tracerLight": {
+                                        "brightness": 0.8,
+                                        "duration": -1,
+                                        "size": 70
+                                    }
+                                },
+                                "type": 4,
+                                "attributes": {
+                                    "cooldowns": {
+                                        "emitFire": {
+                                            "time": 20,
+                                            "last": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "name": "Flamethrower",
+                "description": "Burn Slag, melt Ice and vaporize Water into Steam that rises and becomes rain. Note: Frostbed (solid Snow) needs to be dug out before burnt."
+            },
+            {
+                "id": 13,
+                "itemType": 2,
+                "name": "Pipe Remover",
+                "description": "Used to remove pipes."
+            },
+            {
+                "id": 5,
+                "itemType": 2,
+                "name": "Vacuum",
+                "description": "A vacuum that can be used to move sand effectively."
+            },
+            {
+                "id": 15,
+                "itemType": 2,
+                "name": "Cryoblaster",
+                "description": "Used to create snow, freeze water and solidify lava.",
+                "data": {
+                    "cooldown": {
+                        "time": 20,
+                        "last": 0
+                    }
+                }
+            },
+            {
+                "id": 8,
+                "itemType": 1,
+                "abilities": [
+                    {
+                        "type": 2,
+                        "cooldown": {
+                            "time": 200,
+                            "last": 0
+                        },
+                        "attributes": {
+                            "projectileBlueprint": {
+                                "opts": {
+                                    "speed": 150,
+                                    "duration": 3,
+                                    "tracerLight": {
+                                        "brightness": 0.8,
+                                        "duration": -1,
+                                        "size": 20
+                                    }
+                                },
+                                "type": 2,
+                                "attributes": {
+                                    "cooldowns": {
+                                        "emitSmoke": {
+                                            "time": 100,
+                                            "last": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "name": "Rocket Launcher",
+                "description": "A rocket launcher. For digging big holes. Damage type: 💥"
+            }
+        ],
+        "buildings": [
+            11,
+            16,
+            4,
+            2,
+            5,
+            18,
+            23,
+            24,
+            25,
+            20,
+            21,
+            27,
+            26
+        ],
+        "tech": {
+            "1": true,
+            "2": true,
+            "3": true,
+            "4": true,
+            "5": true,
+            "6": true,
+            "7": true,
+            "8": true,
+            "20": true,
+            "21": true,
+            "22": true,
+            "23": true,
+            "24": true
+        },
+        "action": null,
+        "hotbar": {
+            "activeSlotIndex": 1,
+            "items": [
+                {
+                    "id": 6,
+                    "type": 1
+                },
+                {
+                    "id": 2,
+                    "type": 3
+                },
+                {
+                    "id": 11,
+                    "type": 2
+                },
+                {
+                    "id": 2,
+                    "type": 2
+                },
+                {
+                    "id": 5,
+                    "type": 2
+                },
+                {
+                    "id": 18,
+                    "type": 2
+                },
+                {
+                    "id": 12,
+                    "type": 1
+                },
+                {
+                    "id": 7,
+                    "type": 3
+                },
+                {
+                    "id": 3,
+                    "type": 3
+                }
+            ]
+        },
+        "animations": {
+            "muzzleFlash": false
+        },
+        "grapplingHook": false,
+        "cooldowns": {
+            "boostParticle": {
+                "time": 16,
+                "last": 0
+            },
+            "hoverParticle": {
+                "time": 16,
+                "last": 0
+            }
+        },
+        "isHovering": false,
+        "weaponsMeta": {
+            "rocketLauncher": {
+                "ammo": {
+                    "current": 3,
+                    "reload": {
+                        "last": 0
+                    }
+                }
+            }
+        }
+    },
+    "resources": {
+        "gold": 0,
+        "fluxite": 0,
+        "artifacts": 0
+    },
+    "world": {
+        "size": {
+            "width": 1280,
+            "height": 1280
+        },
+        "matrix": [],
+        "chunks": [],
+        "updatedCellPositions": [],
+        "deferredChunkReports": [],
+        "matrixTraverseDirection": 1,
+        "horizon": [],
+        "groundHorizon": [],
+        "fixtures": [],
+        "lights": [],
+        "sensors": []
+    },
+    "projectiles": [],
+    "structures": [],
+    "drones": [],
+    "pipes": [],
+    "pumpsCache": [],
+    "worldItems": [],
+    "gloom": {
+        "emitterPositions": []
+    },
+    "machineryEngine": {
+        "runLaunchers": false
+    },
+    "meta": {
+        "worldId": "zt3ryrdvdo",
+        "tick": 0,
+        "nextId": {
+            "projectile": 1,
+            "drone": 1,
+            "worldItem": 1
+        },
+        "time": 0
+    },
+    "options": {
+        "defaultFilter": {
+            "density": 200,
+            "mode": "allow"
+        },
+        "buildMode": 1
+    },
+    "scene": {
+        "active": 2,
+        "start": 0,
+        "triggers": [
+            {
+                "done": false
+            },
+            {
+                "done": false
+            },
+            {
+                "done": false
+            }
+        ]
+    },
+    "tutorial": {
+        "active": false,
+        "currentStep": 1,
+        "transitioningToNextStep": false,
+        "data": {}
+    },
+    "progression": {
+        "upgradesUnlocked": true
+    },
+    "upgrades": {
+        "grabber": {
+            "scanner": {
+                "level": 2,
+                "availableLevel": 2
+            },
+            "waterGrab": {
+                "level": 2,
+                "availableLevel": 2
+            }
+        },
+        "jetpack": {
+            "speed": {
+                "level": 5,
+                "availableLevel": 5
+            }
+        },
+        "shovel": {
+            "speed": {
+                "level": 4,
+                "availableLevel": 4
+            },
+            "momentum": {
+                "level": 1,
+                "availableLevel": 1
+            }
+        },
+        "gun": {
+            "speed": {
+                "level": 4,
+                "availableLevel": 4
+            },
+            "damage": {
+                "level": 3,
+                "availableLevel": 3
+            },
+            "bullets": {
+                "level": 2,
+                "availableLevel": 2
+            }
+        },
+        "rocketLauncher": {
+            "reload": {
+                "level": 5,
+                "availableLevel": 5
+            },
+            "maxAmmo": {
+                "level": 1,
+                "availableLevel": 1
+            },
+            "napalm": {
+                "level": 2,
+                "availableLevel": 2
+            }
+        },
+        "hauler": {
+            "maxDrones": {
+                "level": 1,
+                "availableLevel": 1
+            },
+            "speed": {
+                "level": 1,
+                "availableLevel": 1
+            }
+        },
+        "digger": {
+            "cooldown": {
+                "level": 1,
+                "availableLevel": 1
+            },
+            "hp": {
+                "level": 1,
+                "availableLevel": 1
+            },
+            "gravity": {
+                "level": 1,
+                "availableLevel": 1
+            }
+        },
+        "flamethrower": {
+            "range": {
+                "level": 1,
+                "availableLevel": 1
+            }
+        }
+    },
+    "hints": {
+        "nonDestructible": false
+    },
+    "objectives": {
+        "active": []
+    }
+}

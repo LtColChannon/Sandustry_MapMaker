@@ -11,4 +11,19 @@
     <PackageReference Include="System.Drawing.Common" Version="10.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Examples\a1bcde2f3g.save">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\DefaultMap.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\NewGame.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Examples\SandboxGame.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
