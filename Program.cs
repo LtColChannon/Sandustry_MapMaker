@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
@@ -17,33 +12,30 @@ namespace MapMaker
     {
         #region Fields
 
-        // The size if the map in "units" (one unit resolves to 4 "pixels")
-        private const Int32 MatrixSize = 1280;
-
         // This look up table defines the color for each material in the game (solid materials only and no building blocks)
-        private static readonly Dictionary<Int16, Color> _materialLUT = new Dictionary<Int16, Color>()
+        internal static readonly Dictionary<Int16, Color> _materialLUT = new Dictionary<Int16, Color>()
         {
-            [0] = Color.LightSkyBlue,   // Sky,
-            [2] = Color.SandyBrown,     // Sandsoil
-            [3] = Color.PaleGreen,      // Spore
-            [4] = Color.SaddleBrown,    // Empty Space (under ground)
-            [5] = Color.Black,          // Black paint, I guess...?
-            [6] = Color.CornflowerBlue, // Water (under ground)
-            [7] = Color.GhostWhite,     // Snow
-            [8] = Color.Orange,         // Orange Stuff (The game calls this '?')
-            [9] = Color.LawnGreen,      // Grass
-            [10] = Color.DarkSeaGreen,  // Moss
-            [13] = Color.Red,           // Lava
-            [14] = Color.Magenta,       // Fluxite
-            [23] = Color.DimGray,       // Bedrock
-            [25] = Color.AliceBlue,     // Ice
-            [28] = Color.Maroon,        // Redsoil
-            [30] = Color.Beige,         // Crackstone
-            [103] = Color.DeepSkyBlue,  // Water (above ground)
+            [0] = Color.LightSkyBlue,    // Sky,
+            [2] = Color.SandyBrown,      // Sandsoil
+            [3] = Color.PaleGreen,       // Spore
+            [4] = Color.SaddleBrown,     // Empty Space (under ground)
+            [5] = Color.Black,           // Not sure what this is used for
+            [6] = Color.DarkSlateBlue,   // Water (under ground)
+            [7] = Color.GhostWhite,      // Snow
+            [8] = Color.Orange,          // Orange Stuff (The game calls this '?')
+            [9] = Color.LawnGreen,       // Grass
+            [10] = Color.DarkSeaGreen,   // Moss
+            [13] = Color.OrangeRed,      // Lava
+            [14] = Color.Magenta,        // Fluxite
+            [23] = Color.DimGray,        // Bedrock
+            [25] = Color.AliceBlue,      // Ice
+            [28] = Color.Maroon,         // Redsoil
+            [30] = Color.Beige,          // Crackstone
+            [103] = Color.CornflowerBlue // Water (above ground)
         };
 
         // The fallback for unknown elements (Alpha channel will be used to store the original value)
-        private static readonly Color _unknownValueColor = Color.HotPink;
+        internal static readonly Color _unknownValueColor = Color.HotPink;
 
         #endregion
 
@@ -104,7 +96,7 @@ namespace MapMaker
         /// </summary>
         private static void PrintUsage()
         {
-            Console.WriteLine("Please ust the tool like this:");
+            Console.WriteLine("Please use the tool like this:");
             Console.WriteLine("");
             Console.WriteLine("  To create a game file from an image, use:");
             Console.WriteLine("  MapMaker map2img <game-file> <image> [<template_game-file>] [--no-cleanup]");
@@ -143,18 +135,18 @@ namespace MapMaker
                     // Just in case we have incomplete rows or something like that (Use Sky as material)
                     if (matrix[y].Length < x)
                     {
-                        bitmap.SetPixel(x, y, _materialLUT[0]);
+                        bitmap.SetPixel(y, x, _materialLUT[0]);
                     }
                     else
                     {
                         if (!_materialLUT.ContainsKey(matrix[x][y]))
                         {
-                            bitmap.SetPixel(x, y, Color.FromArgb(matrix[x][y], _unknownValueColor));
+                            bitmap.SetPixel(y, x, Color.FromArgb(matrix[x][y], _unknownValueColor));
                             unknownValues = true;
                         }
                         else
                         {
-                            bitmap.SetPixel(x, y, _materialLUT[matrix[x][y]]);
+                            bitmap.SetPixel(y, x, _materialLUT[matrix[x][y]]);
                         }
                     }
                 }
@@ -204,13 +196,7 @@ namespace MapMaker
             JsonDocument jsonTemplate;
 
             // Read the original game file
-            String[] gamefileBuffer = File.ReadAllLines(gameFile);
-
-            // Check length
-            if (gamefileBuffer.Length != 2)
-            {
-                throw new InvalidDataException($"The game file {gameFile} has an unexpected format.");
-            }
+            String[] gamefileBuffer = File.ReadAllLines(gameFile + ".save");
 
             if (template != null)
             {
@@ -219,6 +205,12 @@ namespace MapMaker
             }
             else
             {
+                // Check length
+                if (gamefileBuffer.Length != 2)
+                {
+                    throw new InvalidDataException($"The game file {gameFile} has an unexpected format.");
+                }
+
                 // Use the real game-file instead
                 jsonTemplate = JsonDocument.Parse(gamefileBuffer[1]);
             }
@@ -252,6 +244,57 @@ namespace MapMaker
                 }
             }
 
+            // Create the horizon array
+            JsonArray horizonNode = BuildHorizonJsonArray(matrix, 0);
+
+            // Try to replace the 'horizon' node with our new matrix
+            if (!ReplaceNodeRecursive(rootNode, "horizon", horizonNode))
+            {
+                if (rootNode.GetValueKind() == JsonValueKind.Object)
+                {
+                    rootNode.AsObject().Add("horizon", horizonNode);
+                }
+
+                else if (rootNode.GetValueKind() == JsonValueKind.Array)
+                {
+                    rootNode.AsArray().Add(horizonNode);
+                }
+            }
+
+            // Create the ground-horizon array
+            JsonArray groundHorizonNode = BuildHorizonJsonArray(matrix, 0, 103);
+
+            // Try to replace the 'groundHorizon' node with our new matrix
+            if (!ReplaceNodeRecursive(rootNode, "groundHorizon", groundHorizonNode))
+            {
+                if (rootNode.GetValueKind() == JsonValueKind.Object)
+                {
+                    rootNode.AsObject().Add("groundHorizon", groundHorizonNode);
+                }
+
+                else if (rootNode.GetValueKind() == JsonValueKind.Array)
+                {
+                    rootNode.AsArray().Add(groundHorizonNode);
+                }
+            }
+
+            // Create the chunks array
+            JsonArray chunks = BuildChunksJsonArray();
+
+            // Try to replace the 'groundHorizon' node with our new matrix
+            if (!ReplaceNodeRecursive(rootNode, "chunks", chunks))
+            {
+                if (rootNode.GetValueKind() == JsonValueKind.Object)
+                {
+                    rootNode.AsObject().Add("chunks", chunks);
+                }
+
+                else if (rootNode.GetValueKind() == JsonValueKind.Array)
+                {
+                    rootNode.AsArray().Add(chunks);
+                }
+            }
+
             // Clean unnecessary stuff from the template file
             if (cleanup)
             {
@@ -260,8 +303,9 @@ namespace MapMaker
             }
 
             // Finally write the game file
-            File.WriteAllText(gameFile + "save", fileHeader);
-            File.AppendAllText(gameFile + "save", rootNode.ToJsonString(new JsonSerializerOptions() { WriteIndented = false }));
+            File.WriteAllText(gameFile + ".save", fileHeader);
+            File.AppendAllLines(gameFile + ".save", new String[]{ "" });
+            File.AppendAllText(gameFile + ".save", rootNode.ToJsonString(new JsonSerializerOptions() { WriteIndented = false }));
         }
 
         /// <summary>
@@ -293,6 +337,81 @@ namespace MapMaker
         }
 
         /// <summary>
+        /// Builds a new 'horizon' (or 'groundHorizon) array from our map matrix
+        /// </summary>
+        /// <param name="matrix">The new map matrix</param>
+        /// <param name="skyMaterials">All material values which count as "Sky"</param>
+        /// <returns>a new jason array</returns>
+        private static JsonArray BuildHorizonJsonArray(Int16[][] matrix, params Int16[] skyMaterials)
+        {
+            // Init ret val
+            JsonArray retVal = new JsonArray();
+
+            // Get the shortest row
+            for (Int32 x = 0; x < matrix.Select(x => x.Length).Order().First(); x++)
+            {
+                // If the ground goes all the way to the top, set the horizon to null
+                Int32 horizon = -1;
+
+                // Search from top to bottom
+                for (Int32 y = 0; y < matrix.Length; y++)
+                {
+                    // Find the first unit which is not allowed
+                    if (!skyMaterials.Contains(matrix[y][x]))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        horizon++;
+                    }
+                }
+
+                retVal.Add(
+                    horizon == -1
+                    ? null
+                    : horizon);
+            }
+
+            // Done
+            return retVal;
+        }
+
+        /// <summary>
+        /// Builds the 'chunks' array (No idea what it does)
+        /// </summary>
+        /// <returns>the 'chunks' array</returns>
+        private static JsonArray BuildChunksJsonArray()
+        {
+            // Init ret val
+            JsonArray retVal = new JsonArray();
+
+            // The array always has 32 rows
+            for (Int32 y = 0; y < 32; y++)
+            {
+                // Initialize new row
+                JsonArray row = new JsonArray();
+
+                // The array always has 32 cols
+                for (Int32 x = 0; x < 32; x++)
+                {
+                    row.Add(new JsonObject
+                    {
+                        ["x"] = x,
+                        ["y"] = y,
+                        ["shouldUpdate"] = true,
+                        ["shouldUpdateNextFrame"] = true
+                    });
+                }
+
+                retVal.Add(row);
+            }
+
+            // Done
+            return retVal;
+        }
+
+        /// <summary>
         /// Replaces a jason node, which is specified by its name, with a new json node
         /// </summary>
         /// <param name="root">The root which (probybly) contains the node we're looking for</param>
@@ -301,13 +420,6 @@ namespace MapMaker
         /// <returns>true, if the node was replaced</returns>
         private static bool ReplaceNodeRecursive(JsonNode? root, string nodeName, JsonNode replacementValue)
         {
-            // Check if root already is the node we're looking for
-            if (root?.GetPropertyName() == nodeName)
-            {
-                root = replacementValue;
-                return true;
-            }
-
             // We need to differ between objects and arrays
             if (root is JsonObject rootAsObject)
             {
