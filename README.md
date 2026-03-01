@@ -9,7 +9,7 @@ The tool lets you:
 
 ## Usage
 ```bash
-MapMaker.exe map2imh a1bcde2f3g MyGameMap
+MapMaker.exe map2img a1bcde2f3g MyGameMap
 ```
 
 or
