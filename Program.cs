@@ -99,9 +99,9 @@ namespace MapMaker
             Console.WriteLine("Please use the tool like this:");
             Console.WriteLine("");
             Console.WriteLine("  To create a game file from an image, use:");
-            Console.WriteLine("  MapMaker map2img <game-file> <image> [<template_game-file>] [--no-cleanup]");
+            Console.WriteLine("  MapMaker img2map <game-file> <image> [<template_game-file>] [--no-cleanup]");
             Console.WriteLine("  To create an image from a game file (i. e. for debugging), use:");
-            Console.WriteLine("  MapMaker img2map <game-file> <image>");
+            Console.WriteLine("  MapMaker map2img <game-file> <image>");
         }
 
         #endregion
@@ -227,6 +227,10 @@ namespace MapMaker
                 throw new InvalidOperationException("The given game file (or template file) does not contain any json nodes.");
             }
 
+            // Set map size
+            rootNode["world"]?["size"]?["height"] = matrix.Length;
+            rootNode["world"]?["size"]?["width"] = matrix[0].Length;
+
             // Create a json object from the matrix
             JsonArray matrixNode = BuildMatrixJsonArray(matrix);
 
@@ -245,7 +249,7 @@ namespace MapMaker
             }
 
             // Create the horizon array
-            JsonArray horizonNode = BuildHorizonJsonArray(matrix, 0);
+            JsonArray horizonNode = BuildHorizonJsonArray(matrix, 0, 103, 25);
 
             // Try to replace the 'horizon' node with our new matrix
             if (!ReplaceNodeRecursive(rootNode, "horizon", horizonNode))
@@ -262,7 +266,7 @@ namespace MapMaker
             }
 
             // Create the ground-horizon array
-            JsonArray groundHorizonNode = BuildHorizonJsonArray(matrix, 0, 103);
+            JsonArray groundHorizonNode = BuildHorizonJsonArray(matrix, 0);
 
             // Try to replace the 'groundHorizon' node with our new matrix
             if (!ReplaceNodeRecursive(rootNode, "groundHorizon", groundHorizonNode))
@@ -279,7 +283,7 @@ namespace MapMaker
             }
 
             // Create the chunks array
-            JsonArray chunks = BuildChunksJsonArray();
+            JsonArray chunks = BuildChunksJsonArray(matrix[0].Length, matrix.Length);
 
             // Try to replace the 'groundHorizon' node with our new matrix
             if (!ReplaceNodeRecursive(rootNode, "chunks", chunks))
@@ -381,19 +385,19 @@ namespace MapMaker
         /// Builds the 'chunks' array (No idea what it does)
         /// </summary>
         /// <returns>the 'chunks' array</returns>
-        private static JsonArray BuildChunksJsonArray()
+        private static JsonArray BuildChunksJsonArray(Int32 worldWidth, Int32 worldHeight)
         {
             // Init ret val
             JsonArray retVal = new JsonArray();
 
-            // The array always has 32 rows
-            for (Int32 y = 0; y < 32; y++)
+            // The default array has 32 rows for a world width of 1280 units
+            for (Int32 y = 0; y < (worldHeight / 40); y++)
             {
                 // Initialize new row
                 JsonArray row = new JsonArray();
 
-                // The array always has 32 cols
-                for (Int32 x = 0; x < 32; x++)
+                // The default array has 32 rows for a world height of 1280 units
+                for (Int32 x = 0; x < (worldWidth / 40); x++)
                 {
                     row.Add(new JsonObject
                     {
