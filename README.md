@@ -8,8 +8,15 @@ The tool lets you:
 - write the edited map back into a Sandustry save file.
 
 ## Usage
-MapMaker.exe img2map game-file image [template_game-file] [--no-cleanup]
-MapMaker.exe map2img game-file image
+```bash
+MapMaker.exe map2imh a1bcde2f3g MyGameMap
+```
+
+or
+
+```bash
+MapMaker.exe img2map a1bcde2f3g MyGameMap Examples/SandboxGame
+```
 
 > [!note]
 > Pass file names without extension. The tool appends .save, .png, and .json where needed.
@@ -24,12 +31,8 @@ MapMaker.exe map2img game-file image
 1. Create a new game in Sandustry.
 2. Export the save file from Sandustry.
 3. Run Map Maker to create an image from the save file.
-	e. g. _MapMaker.exe map2img a1bcde2f3g MyGameMap_
-	This creates MyGameMap.png from your save file a1bcde2f3g.save.
 4. Edit the image however you like (drawing in paint works just file)
 5. Run Map Maker to inject your edited image back into a save file.
-	e. g. _MapMaker.exe img2map a1bcde2f3g MyGameMap NewGame_
-	This overwrites a1bcde2f3g.save using NewGame.json as a template and injecting MyGameMap.png as the map.
 6. Import the resulting save file back into Sandustry.
 
 ## Templates
