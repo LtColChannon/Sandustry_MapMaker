@@ -18,7 +18,7 @@ MapMaker.exe map2img game-file image
 - _img2map_ reads a .png image and writes a Sandustry .save file.
 - _template_game-file_ (optional, but recommended) is a JSON template for the save file when generating output.
 - --no-cleanup (optional, not recommended) keeps existing fixtures and structures in the template instead of clearing them.
-- 
+
 ## Workflow
 
 1. Create a new game in Sandustry.
