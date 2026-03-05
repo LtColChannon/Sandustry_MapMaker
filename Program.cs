@@ -123,7 +123,7 @@ namespace MapMaker
             Int16[][] matrix = LoadMatrixFromJson(gameFile);
 
             // Create a new bitmap, which will later contain the map
-            Bitmap bitmap = new Bitmap(matrix.Select(r => r.Length).OrderDescending().First(), matrix.Length, PixelFormat.Format24bppRgb);
+            Bitmap bitmap = new Bitmap(matrix.Select(r => r.Length).OrderDescending().First(), matrix.Length, PixelFormat.Format32bppArgb);
 
             // Flag to notify the user about unknown calues
             Boolean unknownValues = false;
