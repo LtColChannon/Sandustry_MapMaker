@@ -22,14 +22,16 @@ namespace MapMaker
             [5] = Color.Black,           // Not sure what this is used for
             [6] = Color.DarkSlateBlue,   // Water (under ground)
             [7] = Color.GhostWhite,      // Snow
-            [8] = Color.Orange,          // Orange Stuff (The game calls this '?')
+            [8] = Color.Orange,          // Divider (The game calls this '?')
             [9] = Color.LawnGreen,       // Grass
             [10] = Color.DarkSeaGreen,   // Moss
+            [11] = Color.Gold,           // Goldsoil
             [13] = Color.OrangeRed,      // Lava
             [14] = Color.Magenta,        // Fluxite
             [23] = Color.DimGray,        // Bedrock
             [25] = Color.AliceBlue,      // Ice
             [28] = Color.Maroon,         // Redsoil
+            [29] = Color.DarkRed,        // Scoria
             [30] = Color.Beige,          // Crackstone
             [103] = Color.CornflowerBlue // Water (above ground)
         };
